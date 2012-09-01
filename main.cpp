@@ -66,7 +66,7 @@ std::string readpass()
    t.c_lflag |= ECHO;
    tcsetattr(0, TCSANOW, &t);
 
-   std::cout << '\n';
+   std::cout << format_sum(sha256_rounds("sig|" + pass, 1000)).substr(4, 4) << "...\n";
 
    return pass;
 }
