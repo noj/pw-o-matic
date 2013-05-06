@@ -21,16 +21,16 @@ namespace
             load();
         }
 
-        void add(const std::string& completion)
+        void store(const std::string& completion)
         {
             m_completions.insert(completion);
-            store();
+            save();
         }
 
         const std::set<std::string>& completions() const { return m_completions; }
 
     private:
-        void store()
+        void save()
         {
             if(m_completions.empty())
                 return;
@@ -158,8 +158,7 @@ namespace
         {
             if(m_pass_entry->get_text_length() != 0)
             {
-                // Store completion.
-                m_completions.add(m_site_entry->get_text());
+                m_completions.store(m_site_entry->get_text());
 
                 Gtk::Clipboard::get()->set({ Gtk::TargetEntry("UTF8_STRING") },
                                            sigc::mem_fun(this, &PwApp::on_clipboard_get),
