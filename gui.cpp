@@ -24,10 +24,12 @@ namespace
         void add(const std::string& completion)
         {
             m_completions.insert(completion);
+            store();
         }
 
         const std::set<std::string>& completions() const { return m_completions; }
 
+    private:
         void store()
         {
             if(m_completions.empty())
@@ -42,8 +44,6 @@ namespace
 
             std::cout << "wrote " << m_completions.size() << " completions" << std::endl;
         }
-
-    private:
 
         void load()
         {
@@ -158,11 +158,8 @@ namespace
         {
             if(m_pass_entry->get_text_length() != 0)
             {
-                // We only store the completion here, if the user actually
-                // copied the generated password to the clipboard, that is to
-                // ensure that we don't store loads of junk.
+                // Store completion.
                 m_completions.add(m_site_entry->get_text());
-                m_completions.store();
 
                 Gtk::Clipboard::get()->set({ Gtk::TargetEntry("UTF8_STRING") },
                                            sigc::mem_fun(this, &PwApp::on_clipboard_get),
